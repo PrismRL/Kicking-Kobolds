@@ -6,6 +6,7 @@ prism.registerActor("Kobold", function()
       prism.components.Senses(),
       prism.components.Sight{ range = 12, fov = true },
       prism.components.Mover{ "walk" },
-      prism.components.KoboldController()
+      prism.components.KoboldController(),
+      prism.components.Health(3)
    }
 end)

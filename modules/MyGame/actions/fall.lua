@@ -19,7 +19,7 @@ end
 
 --- @param level Level
 function Fall:perform(level)
-   level:removeActor(self.owner) -- into the depths with you!
+   level:perform(prism.actions.Die(self.owner))
 end
 
 return Fall
