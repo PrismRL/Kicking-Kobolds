@@ -1,5 +1,6 @@
 prism.registerActor("Player", function()
    return prism.Actor.fromComponents {
+      prism.components.Name("Player"),
       prism.components.Position(),
       prism.components.Drawable("@", prism.Color4.GREEN),
       prism.components.Collider(),
