@@ -1,7 +1,5 @@
 local DamageTarget = prism.Target()
-   :filter(function(_, _, target)
-      return type(target) == "number"
-   end)
+   :isType("number")
 
 local Damage = prism.Action:extend("Damage")
 Damage.name = "Damage"
