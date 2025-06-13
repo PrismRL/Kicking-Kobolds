@@ -1,4 +1,5 @@
 local keybindings = require "keybindingschema"
+local GameOverState = require "gamestates.gameoverstate"
 
 --- @class MyGameLevelState : LevelState
 --- A custom game level state responsible for initializing the level map,
@@ -51,8 +52,7 @@ function MyGameLevelState:handleMessage(message)
    -- level or triggering a game over.
 
    if prism.messages.Lose:is(message) then
-      self.manager:pop()
-      love.event.quit()
+      self.manager:enter(GameOverState(self.display))
    end
 end
 
