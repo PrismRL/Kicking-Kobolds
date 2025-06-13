@@ -1,3 +1,5 @@
+--- @class Fall : Action
+--- @overload fun(owner: Actor): Fall
 local Fall = prism.Action:extend "Fall"
 
 --- @param level Level

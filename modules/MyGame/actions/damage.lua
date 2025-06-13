@@ -1,15 +1,12 @@
 local DamageTarget = prism.Target()
-   :filter(function(_, _, target)
-      return type(target) == "number"
-   end)
+   :isType("number")
 
+--- @class Damage : Action
+--- @overload fun(owner: Actor, damage: number): Damage
 local Damage = prism.Action:extend("Damage")
 Damage.name = "Damage"
 Damage.targets = { DamageTarget }
-
-function Damage:getRequirements()
-   return prism.components.Health
-end
+Damage.requiredComponents = { prism.components.Health }
 
 function Damage:perform(level, damage)
    local health = self.owner:expect(prism.components.Health)
