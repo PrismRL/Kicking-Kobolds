@@ -74,7 +74,19 @@ function MyGameLevelState:draw(primary, secondary)
    -- custom terminal drawing goes here!
 
    -- Say hello!
-   self.display:putString(1, 1, "Hello prism!")
+   local health = self.decision.actor:get(prism.components.Health)
+   if health then
+      self.display:putString(1, 1, "HP:" .. health.hp .. "/" .. health.maxHP)
+   end
+
+   local log = self.decision.actor:get(prism.components.Log)
+   if log then
+      local offset = 0
+      for line in log:iterLast(5) do
+         self.display:putString(1, self.display.height - offset, line)
+         offset = offset + 1
+      end
+   end
 
    -- Actually render the terminal out and present it to the screen.
    -- You could use love2d to translate and say center a smaller terminal or

@@ -11,6 +11,7 @@ Damage.requiredComponents = { prism.components.Health }
 function Damage:perform(level, damage)
    local health = self.owner:expect(prism.components.Health)
    health.hp = health.hp - damage
+   self.dealt = damage 
 
    if health.hp <= 0 then
       level:perform(prism.actions.Die(self.owner))

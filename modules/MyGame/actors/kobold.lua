@@ -1,5 +1,6 @@
 prism.registerActor("Kobold", function()
    return prism.Actor.fromComponents {
+      prism.components.Name("Kobold"),
       prism.components.Position(),
       prism.components.Collider(),
       prism.components.Drawable("k", prism.Color4.RED),
@@ -8,6 +9,6 @@ prism.registerActor("Kobold", function()
       prism.components.Mover{ "walk" },
       prism.components.KoboldController(),
       prism.components.Health(3),
-      prism.components.Attacker(1)
+      prism.components.Attacker(1),
    }
 end)

@@ -1,3 +1,7 @@
+local Log = prism.components.Log
+local Name = prism.components.Name
+local sf = string.format
+
 local KickTarget = prism.Target()
    :with(prism.components.Collider)
    :range(1)
@@ -31,6 +35,17 @@ function Kick:perform(level, kicked)
    if level:canPerform(damage) then
       level:perform(damage)
    end
+
+   local dmgstr = ""
+   if damage.dealt then
+      dmgstr = sf("Dealing %i damage.", damage.dealt)
+   end
+   
+   local kickName = Name.lower(kicked)
+   local ownerName = Name.lower(self.owner)
+   Log.addMessage(self.owner, sf("You kick the %s. %s", kickName, dmgstr))
+   Log.addMessage(kicked, sf("The %s kicks you! %s", ownerName, dmgstr))
+   Log.addMessageSensed(level, self, sf("The %s kicks the %s. %s", ownerName, kickName, dmgstr))
 end
 
 return Kick

@@ -3,6 +3,7 @@ require "prism"
 
 prism.loadModule("prism/spectrum")
 prism.loadModule("modules/Sight")
+prism.loadModule("prism/extra/Log")
 prism.loadModule("modules/MyGame")
 
 -- Grab our level state and sprite atlas.
