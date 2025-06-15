@@ -73,6 +73,7 @@ return function(rng, player, width, height)
    end
 
    local playerPos = startRoom:center():floor()
+   builder:addActor(player, playerPos.x, playerPos.y)
 
    for _, room in pairs(rooms) do
       if room ~= startRoom then
@@ -82,7 +83,6 @@ return function(rng, player, width, height)
       end
    end
 
-   builder:addActor(player, playerPos.x, playerPos.y)
    builder:addPadding(1, prism.cells.Wall)
 
    return builder
