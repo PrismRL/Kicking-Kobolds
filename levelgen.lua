@@ -85,5 +85,19 @@ return function(rng, player, width, height)
 
    builder:addPadding(1, prism.cells.Wall)
 
+   --- @type Rectangle[]
+   local availableRooms = {}
+   for _, room in pairs(rooms) do
+      if room ~= startRoom then
+         table.insert(availableRooms, room)
+      end
+   end
+
+   local stairRoom = availableRooms[rng:getUniformInt(1, #availableRooms)]
+   local corners = stairRoom:toCorners()
+   local randCorner = corners[rng:getUniformInt(1, #corners)]
+
+   builder:addActor(prism.actors.Stairs(), randCorner.x, randCorner.y)
+
    return builder
 end

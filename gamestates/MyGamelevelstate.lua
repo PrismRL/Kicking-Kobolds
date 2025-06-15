@@ -45,11 +45,17 @@ function MyGameLevelState:handleMessage(message)
    if prism.messages.Lose:is(message) then
       self.manager:enter(GameOverState(self.display))
    end
+
+   if prism.messages.Descend:is(message) then
+      self.manager:enter(MyGameLevelState(self.display))
+   end
 end
 
 --- @param primary Senses[] { curActor:getComponent(prism.components.Senses)}
 ---@param secondary Senses[]
 function MyGameLevelState:draw(primary, secondary)
+   if not self.decision then return end
+
    self.display:clear()
 
    local position = self.decision.actor:getPosition()
@@ -120,6 +126,16 @@ function MyGameLevelState:keypressed(key, scancode)
    -- Attempt to translate the action into a directional move
    if keybindOffsets[action] then
       local destination = owner:getPosition() + keybindOffsets[action]
+
+      local descendTarget = self.level:query(prism.components.Stairs)
+         :at(destination:decompose())
+         :first()
+
+      local descend = prism.actions.Descend(owner, descendTarget)
+      if self.level:canPerform(descend) then
+         decision:setAction(descend)
+         return
+      end
 
       local move = prism.actions.Move(owner, destination)
       if self.level:canPerform(move) then
