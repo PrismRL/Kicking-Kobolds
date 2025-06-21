@@ -5,6 +5,8 @@ prism.loadModule("prism/spectrum")
 prism.loadModule("modules/Sight")
 prism.loadModule("modules/MyGame")
 
+love.keyboard.setKeyRepeat(true)
+
 -- Grab our level state and sprite atlas.
 local MyGameLevelState = require "gamestates.MyGamelevelstate"
 
