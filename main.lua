@@ -6,6 +6,8 @@ prism.loadModule("modules/Sight")
 prism.loadModule("prism/extra/Log")
 prism.loadModule("modules/MyGame")
 
+love.keyboard.setKeyRepeat(true)
+
 --- @module "game"
 local Game = require("game")
 GAME = Game(tostring(os.time()))
