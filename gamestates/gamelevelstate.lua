@@ -1,19 +1,19 @@
 local keybindings = require "keybindingschema"
 local GameOverState = require "gamestates.gameoverstate"
 
---- @class MyGameLevelState : LevelState
+--- @class GameLevelState : LevelState
 --- A custom game level state responsible for initializing the level map,
 --- handling input, and drawing the state to the screen.
 ---
 --- @field path Path
 --- @field level Level
---- @overload fun(display: Display, builder: MapBuilder, seed: string): MyGameLevelState
-local MyGameLevelState = spectrum.LevelState:extend "MyGameLevelState"
+--- @overload fun(display: Display, builder: MapBuilder, seed: string): GameLevelState
+local GameLevelState = spectrum.LevelState:extend "GameLevelState"
 
 --- @param display Display
 --- @param builder MapBuilder
 --- @param seed string
-function MyGameLevelState:__new(display, builder, seed)
+function GameLevelState:__new(display, builder, seed)
    -- Build the map and instantiate the level with systems
    local map, actors = builder:build()
    local level = prism.Level(map, actors, {
@@ -27,7 +27,7 @@ function MyGameLevelState:__new(display, builder, seed)
    spectrum.LevelState.__new(self, level, display)
 end
 
-function MyGameLevelState:handleMessage(message)
+function GameLevelState:handleMessage(message)
    spectrum.LevelState.handleMessage(self, message)
 
    -- Handle any messages sent to the level state from the level. LevelState
@@ -37,30 +37,21 @@ function MyGameLevelState:handleMessage(message)
    -- This is where you'd process custom messages like advancing to the next
    -- level or triggering a game over.
 
-   if prism.messages.Lose:is(message) then
-      self.manager:enter(GameOverState(self.display))
-   end
+   if prism.messages.Lose:is(message) then self.manager:enter(GameOverState(self.display)) end
 
    if prism.messages.Descend:is(message) then
       --- @cast message DescendMessage
-      self.manager:enter(MyGameLevelState(
-         self.display,
-         GAME:generateNextFloor(message.descender),
-         GAME:getLevelSeed()
-      ))
+      self.manager:enter(GameLevelState(self.display, GAME:generateNextFloor(message.descender), GAME:getLevelSeed()))
    end
 end
 
---- @param primary Senses[] { curActor:getComponent(prism.components.Senses)}
----@param secondary Senses[]
-function MyGameLevelState:draw(primary, secondary)
+function GameLevelState:draw(primary, secondary)
    if not self.decision then return end
-
    self.display:clear()
 
    local position = self.decision.actor:getPosition()
    if not position then return end
-   
+
    local x, y = self.display:getCenterOffset(position:decompose())
    self.display:setCamera(x, y)
 
@@ -72,9 +63,7 @@ function MyGameLevelState:draw(primary, secondary)
 
    -- Say hello!
    local health = self.decision.actor:get(prism.components.Health)
-   if health then
-      self.display:putString(1, 1, "HP:" .. health.hp .. "/" .. health.maxHP)
-   end
+   if health then self.display:putString(1, 1, "HP:" .. health.hp .. "/" .. health.maxHP) end
 
    local log = self.decision.actor:get(prism.components.Log)
    if log then
@@ -111,7 +100,7 @@ local keybindOffsets = {
 -- You should NOT mutate the Level here directly. Instead, find a valid
 -- action and set it in the decision object. It will then be executed by
 -- the level. This is a similar pattern to the example KoboldController.
-function MyGameLevelState:keypressed(key, scancode)
+function GameLevelState:keypressed(key, scancode)
    -- handles opening geometer for us
    spectrum.LevelState.keypressed(self, key, scancode)
 
@@ -127,9 +116,7 @@ function MyGameLevelState:keypressed(key, scancode)
    if keybindOffsets[action] then
       local destination = owner:getPosition() + keybindOffsets[action]
 
-      local descendTarget = self.level:query(prism.components.Stairs)
-         :at(destination:decompose())
-         :first()
+      local descendTarget = self.level:query(prism.components.Stairs):at(destination:decompose()):first()
 
       local descend = prism.actions.Descend(owner, descendTarget)
       if self.level:canPerform(descend) then
@@ -143,18 +130,18 @@ function MyGameLevelState:keypressed(key, scancode)
          return
       end
 
-      local target = self.level:query() -- grab a query object
+      -- stylua: ignore
+      local target = self.level
+         :query() -- grab a query object
          :at(destination:decompose()) -- restrict the query to the destination
          :first() -- grab one of the kickable things, or nil
 
       local kick = prism.actions.Kick(owner, target)
-      if self.level:canPerform(kick) then
-         decision:setAction(kick)
-      end
+      if self.level:canPerform(kick) then decision:setAction(kick) end
    end
 
    -- Handle waiting
    if action == "wait" then decision:setAction(prism.actions.Wait(self.decision.actor)) end
 end
 
-return MyGameLevelState
+return GameLevelState

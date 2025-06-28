@@ -2,9 +2,9 @@ require "debugger"
 require "prism"
 
 prism.loadModule("prism/spectrum")
-prism.loadModule("modules/Sight")
-prism.loadModule("prism/extra/Log")
-prism.loadModule("modules/MyGame")
+prism.loadModule("prism/extra/sight")
+prism.loadModule("prism/extra/log")
+prism.loadModule("modules/game")
 
 love.keyboard.setKeyRepeat(true)
 
@@ -13,7 +13,7 @@ local Game = require("game")
 GAME = Game(tostring(os.time()))
 
 -- Grab our level state and sprite atlas.
-local MyGameLevelState = require "gamestates.MyGamelevelstate"
+local GameLevelState = require "gamestates.gamelevelstate"
 
 -- Load a sprite atlas and configure the terminal-style display,
 local spriteAtlas = spectrum.SpriteAtlas.fromASCIIGrid("display/wanderlust_16x16.png", 16, 16)
@@ -30,6 +30,6 @@ local manager = spectrum.StateManager()
 --- @diagnostic disable-next-line
 function love.load()
    local builder = GAME:generateNextFloor(prism.actors.Player())
-   manager:push(MyGameLevelState(display, builder))
+   manager:push(GameLevelState(display, builder, GAME:getLevelSeed()))
    manager:hook()
 end
