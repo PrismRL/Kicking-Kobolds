@@ -1,16 +1,16 @@
 local keybindings = require "keybindingschema"
 
---- @class MyGameLevelState : LevelState
+--- @class GameLevelState : LevelState
 --- A custom game level state responsible for initializing the level map,
 --- handling input, and drawing the state to the screen.
 ---
 --- @field path Path
 --- @field level Level
---- @overload fun(display: Display): MyGameLevelState
-local MyGameLevelState = spectrum.LevelState:extend "MyGameLevelState"
+--- @overload fun(display: Display): GameLevelState
+local GameLevelState = spectrum.LevelState:extend "GameLevelState"
 
 --- @param display Display
-function MyGameLevelState:__new(display)
+function GameLevelState:__new(display)
    -- Construct a simple test map using MapBuilder.
    -- In a complete game, you'd likely extract this logic to a separate module
    -- and pass in an existing player object between levels.
@@ -39,7 +39,7 @@ function MyGameLevelState:__new(display)
    spectrum.LevelState.__new(self, level, display)
 end
 
-function MyGameLevelState:handleMessage(message)
+function GameLevelState:handleMessage(message)
    spectrum.LevelState.handleMessage(self, message)
 
    -- Handle any messages sent to the level state from the level. LevelState
@@ -52,12 +52,12 @@ end
 
 --- @param primary Senses[] { curActor:getComponent(prism.components.Senses)}
 ---@param secondary Senses[]
-function MyGameLevelState:draw(primary, secondary)
+function GameLevelState:draw(primary, secondary)
    self.display:clear()
 
    local position = self.decision.actor:getPosition()
    if not position then return end
-   
+
    local x, y = self.display:getCenterOffset(position:decompose())
    self.display:setCamera(x, y)
 
@@ -96,7 +96,7 @@ local keybindOffsets = {
 -- You should NOT mutate the Level here directly. Instead, find a valid
 -- action and set it in the decision object. It will then be executed by
 -- the level. This is a similar pattern to the example KoboldController.
-function MyGameLevelState:keypressed(key, scancode)
+function GameLevelState:keypressed(key, scancode)
    -- handles opening geometer for us
    spectrum.LevelState.keypressed(self, key, scancode)
 
@@ -118,18 +118,18 @@ function MyGameLevelState:keypressed(key, scancode)
          return
       end
 
-      local target = self.level:query() -- grab a query object
+      -- stylua: ignore
+      local target = self.level
+         :query() -- grab a query object
          :at(destination:decompose()) -- restrict the query to the destination
          :first() -- grab one of the kickable things, or nil
 
       local kick = prism.actions.Kick(owner, target)
-      if self.level:canPerform(kick) then
-         decision:setAction(kick)
-      end
+      if self.level:canPerform(kick) then decision:setAction(kick) end
    end
 
    -- Handle waiting
    if action == "wait" then decision:setAction(prism.actions.Wait(self.decision.actor)) end
 end
 
-return MyGameLevelState
+return GameLevelState
