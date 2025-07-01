@@ -42,9 +42,7 @@ function GameLevelState:handleMessage(message)
    -- This is where you'd process custom messages like advancing to the next
    -- level or triggering a game over.
 
-   if prism.messages.Lose:is(message) then
-      self.manager:enter(GameOverState(self.display))
-   end
+   if prism.messages.Lose:is(message) then self.manager:enter(GameOverState(self.display)) end
 end
 
 --- @param primary Senses[] { curActor:getComponent(prism.components.Senses)}
@@ -66,9 +64,7 @@ function GameLevelState:draw(primary, secondary)
 
    -- Say hello!
    local health = self.decision.actor:get(prism.components.Health)
-   if health then
-      self.display:putString(1, 1, "HP:" .. health.hp .. "/" .. health.maxHP)
-   end
+   if health then self.display:putString(1, 1, "HP:" .. health.hp .. "/" .. health.maxHP) end
 
    local log = self.decision.actor:get(prism.components.Log)
    if log then
