@@ -43,8 +43,6 @@ function GameLevelState:handleMessage(message)
    -- level or triggering a game over.
 
    if prism.messages.Lose:is(message) then self.manager:enter(GameOverState(self.display)) end
-
-   if prism.messages.Descend:is(message) then self.manager:enter(GameLevelState(self.display)) end
 end
 
 function GameLevelState:draw(primary, secondary)
