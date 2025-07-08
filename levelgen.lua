@@ -8,7 +8,7 @@ return function(rng, player, width, height)
    local builder = prism.MapBuilder(prism.cells.Wall)
 
    -- Fill the map with random noise of pits and walls.
-   local nox, noy = rng:getUniformInt(1, 10000), rng:getUniformInt(1, 10000)
+   local nox, noy = rng:random(1, 10000), rng:random(1, 10000)
    for x = 1, width do
       for y = 1, height do
          local noise = love.math.perlinNoise(x / 5 + nox, y / 5 + noy)
@@ -21,16 +21,16 @@ return function(rng, player, width, height)
    --- @type table<number, Rectangle>
    local rooms = {}
 
-   local missing = prism.Vector2(rng:getUniformInt(0, PARTITIONS - 1), rng:getUniformInt(0, PARTITIONS - 1))
+   local missing = prism.Vector2(rng:random(0, PARTITIONS - 1), rng:random(0, PARTITIONS - 1))
    local pw, ph = math.floor(width / PARTITIONS), math.floor(height / PARTITIONS)
    local minrw, minrh = math.floor(pw / 3), math.floor(ph / 3)
    local maxrw, maxrh = pw - 2, ph - 2 -- Subtract 2 to ensure there's a margin.
    for px = 0, PARTITIONS - 1 do
       for py = 0, PARTITIONS - 1 do
-         if missing ~= prism.Vector2(px, py) then
-            local rw, rh = rng:getUniformInt(minrw, maxrw), rng:getUniformInt(minrh, maxrh)
-            local x = rng:getUniformInt(px * pw + 1, (px + 1) * pw - rw - 1)
-            local y = rng:getUniformInt(py * ph + 1, (py + 1) * ph - rh - 1)
+         if not missing:equals(px, py) then
+            local rw, rh = rng:random(minrw, maxrw), rng:random(minrh, maxrh)
+            local x = rng:random(px * pw + 1, (px + 1) * pw - rw - 1)
+            local y = rng:random(py * ph + 1, (py + 1) * ph - rh - 1)
 
             local roomRect = prism.Rectangle(x, y, rw, rh)
             rooms[prism.Vector2._hash(px, py)] = roomRect
@@ -49,7 +49,7 @@ return function(rng, player, width, height)
       local ax, ay = a:center():floor():decompose()
       local bx, by = b:center():floor():decompose()
       -- Randomly choose one of two L-shaped tunnel patterns for variety.
-      if rng:getUniform() > 0.5 then
+      if rng:random() > 0.5 then
          builder:drawLine(ax, ay, bx, ay, prism.cells.Floor)
          builder:drawLine(bx, ay, bx, by, prism.cells.Floor)
       else
@@ -68,7 +68,7 @@ return function(rng, player, width, height)
    -- Choose the first room (top-left partition) to place the player.
    local startRoom
    while not startRoom do
-      local x, y = rng:getUniformInt(0, PARTITIONS - 1), rng:getUniformInt(0, PARTITIONS - 1)
+      local x, y = rng:random(0, PARTITIONS - 1), rng:random(0, PARTITIONS - 1)
       startRoom = rooms[prism.Vector2._hash(x, y)]
    end
 
@@ -88,14 +88,12 @@ return function(rng, player, width, height)
    --- @type Rectangle[]
    local availableRooms = {}
    for _, room in pairs(rooms) do
-      if room ~= startRoom then
-         table.insert(availableRooms, room)
-      end
+      if room ~= startRoom then table.insert(availableRooms, room) end
    end
 
-   local stairRoom = availableRooms[rng:getUniformInt(1, #availableRooms)]
+   local stairRoom = availableRooms[rng:random(1, #availableRooms)]
    local corners = stairRoom:toCorners()
-   local randCorner = corners[rng:getUniformInt(1, #corners)]
+   local randCorner = corners[rng:random(1, #corners)]
 
    builder:addActor(prism.actors.Stairs(), randCorner.x, randCorner.y)
 

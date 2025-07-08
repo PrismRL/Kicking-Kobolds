@@ -12,7 +12,7 @@ end
 
 --- @return string
 function Game:getLevelSeed()
-   return tostring(self.rng:getUniform())
+   return tostring(self.rng:random())
 end
 
 --- @param player Actor
@@ -24,4 +24,4 @@ function Game:generateNextFloor(player)
    return levelgen(genRNG, player, 60, 30)
 end
 
-return Game
+return Game(tostring(os.time()))

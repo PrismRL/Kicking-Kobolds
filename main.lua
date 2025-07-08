@@ -8,9 +8,7 @@ prism.loadModule("modules/game")
 
 love.keyboard.setKeyRepeat(true)
 
---- @module "game"
 local Game = require("game")
-GAME = Game(tostring(os.time()))
 
 -- Grab our level state and sprite atlas.
 local GameLevelState = require "gamestates.gamelevelstate"
@@ -29,7 +27,7 @@ local manager = spectrum.StateManager()
 -- we put out levelstate on top here, but you could create a main menu
 --- @diagnostic disable-next-line
 function love.load()
-   local builder = GAME:generateNextFloor(prism.actors.Player())
-   manager:push(GameLevelState(display, builder, GAME:getLevelSeed()))
+   local builder = Game:generateNextFloor(prism.actors.Player())
+   manager:push(GameLevelState(display, builder, Game:getLevelSeed()))
    manager:hook()
 end

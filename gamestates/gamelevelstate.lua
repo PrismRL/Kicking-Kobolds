@@ -1,3 +1,4 @@
+local Game = require "game"
 local keybindings = require "keybindingschema"
 local GameOverState = require "gamestates.gameoverstate"
 
@@ -41,7 +42,7 @@ function GameLevelState:handleMessage(message)
 
    if prism.messages.Descend:is(message) then
       --- @cast message DescendMessage
-      self.manager:enter(GameLevelState(self.display, GAME:generateNextFloor(message.descender), GAME:getLevelSeed()))
+      self.manager:enter(GameLevelState(self.display, Game:generateNextFloor(message.descender), Game:getLevelSeed()))
    end
 end
 
@@ -63,7 +64,9 @@ function GameLevelState:draw(primary, secondary)
 
    -- Say hello!
    local health = self.decision.actor:get(prism.components.Health)
-   if health then self.display:putString(1, 1, "HP:" .. health.hp .. "/" .. health.maxHP) end
+   if health then self.display:putString(1, 1, "HP: " .. health.hp .. "/" .. health.maxHP) end
+
+   self.display:putString(1, 2, "Depth: " .. Game.depth)
 
    local log = self.decision.actor:get(prism.components.Log)
    if log then
