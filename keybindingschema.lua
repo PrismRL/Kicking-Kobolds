@@ -10,4 +10,8 @@ return spectrum.Keybinding {
    { key = "x", action = "wait", description = "Character waits and does nothing." },
    { key = "r", mode = "game-over", action = "restart", description = "Restarts the game." },
    { key = "q", mode = "game-over", action = "quit", description = "Quits the game." },
+   -- inventory
+   { key = "tab", action = "inventory", description = "Opens the inventory screen." },
+   { key = "backspace", action = "return", description = "Moves back a level in a substate." },
+   { key = "p", action = "pickup", description = "Picks up an inventory item." },
 }
