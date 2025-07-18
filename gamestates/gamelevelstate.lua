@@ -155,7 +155,7 @@ function GameLevelState:keypressed(key, scancode)
    end
 
    if action == "inventory" then
-      local inventory = decision.actor:get(prism.components.Inventory)
+      local inventory = owner:get(prism.components.Inventory)
       if inventory then
          local inventoryState = InventoryState(self.display, decision, self.level, inventory)
          self.manager:push(inventoryState)
