@@ -3,8 +3,9 @@ prism.registerActor("MeatBrick", function ()
       prism.components.Name("Meat Brick"),
       prism.components.Drawable("%", prism.Color4.RED),
       prism.components.Item{
-         stackable = true,
+         stackable = prism.actors.MeatBrick,
          stackLimit = 99
-      }
+      },
+      prism.components.Edible(1)
    }
 end)

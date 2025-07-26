@@ -5,13 +5,13 @@ KoboldController.name = "KoboldController"
 
 function KoboldController:act(level, actor)
    local senses = actor:get(prism.components.Senses)
-   if not senses then return prism.actions.Wait() end -- we can't see!
+   if not senses then return prism.actions.Wait(self.owner) end -- we can't see!
 
    local player = senses:query(prism.components.PlayerController):first()
-   if not player then return prism.actions.Wait() end -- no player nearby!
+   if not player then return prism.actions.Wait(self.owner) end -- no player nearby!
 
    local mover = actor:get(prism.components.Mover)
-   if not mover then return prism.actions.Wait() end -- we can't move!
+   if not mover then return prism.actions.Wait(self.owner) end -- we can't move!
 
    local path = level:findPath(actor:getPosition(), player:getPosition(), actor, mover.mask, 1)
 
