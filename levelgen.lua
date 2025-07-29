@@ -1,3 +1,4 @@
+local chestloot = require "loot.chest"
 local PARTITIONS = 3
 
 --- @param rng RNG
@@ -96,6 +97,13 @@ return function(rng, player, width, height)
    local randCorner = corners[rng:random(1, #corners)]
 
    builder:addActor(prism.actors.Stairs(), randCorner.x, randCorner.y)
+
+   local chestRoom = availableRooms[rng:random(1, #availableRooms)]
+   local center = chestRoom:center()
+   local drops = prism.components.DropTable(chestloot):getDrops(rng)
+
+   local mf = math.floor
+   builder:addActor(prism.actors.Chest(drops), mf(center.x), mf(center.y))
 
    return builder
 end

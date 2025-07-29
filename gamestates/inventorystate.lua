@@ -3,7 +3,7 @@ local InventoryActionState = require "gamestates.inventoryactionstate"
 
 --- @class InventoryState : GameState
 --- @field previousState GameState
---- @overload fun(display: Display, decision: ActionDecision, level: Level, inventory: Inventory)
+--- @overload fun(display: Display, decision: ActionDecision, level: Level, inventory: Inventory): self
 local InventoryState = spectrum.GameState:extend "InventoryState"
 
 --- @param display Display

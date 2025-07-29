@@ -4,7 +4,7 @@ local Name = prism.components.Name
 --- @class InventoryActionState : GameState
 --- @field decision ActionDecision
 --- @field previousState GameState
---- @overload fun(display: Display, decision: ActionDecision, level: Level, item: Actor)
+--- @overload fun(display: Display, decision: ActionDecision, level: Level, item: Actor): self
 local InventoryActionState = spectrum.GameState:extend "InventoryActionState"
 
 --- @param display Display
