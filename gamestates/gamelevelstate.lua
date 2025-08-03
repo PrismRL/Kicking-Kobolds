@@ -22,6 +22,7 @@ function GameLevelState:__new(display, builder, seed)
       prism.systems.Senses(),
       prism.systems.Sight(),
       prism.systems.Fall(),
+      prism.systems.Tick(),
    }, nil, seed)
 
    -- Initialize with the created level and display, the heavy lifting is done by
@@ -65,7 +66,7 @@ function GameLevelState:draw(primary, secondary)
 
    -- Say hello!
    local health = self.decision.actor:get(prism.components.Health)
-   if health then self.display:putString(1, 1, "HP: " .. health.hp .. "/" .. health.maxHP) end
+   if health then self.display:putString(1, 1, "HP: " .. health.hp .. "/" .. health:getMaxHP()) end
 
    self.display:putString(1, 2, "Depth: " .. Game.depth)
 

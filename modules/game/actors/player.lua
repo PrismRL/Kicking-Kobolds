@@ -12,5 +12,6 @@ prism.registerActor("Player", function()
       prism.components.Inventory{
          limitCount = 26,
       },
+      prism.components.StatusEffects(),
    }
 end)

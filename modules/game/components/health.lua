@@ -1,18 +1,46 @@
-   --- @class Health : Component
-   --- @field maxHP integer
-   --- @field hp integer
-   --- @overload fun(maxHP: integer)
-   local Health = prism.Component:extend("Health")
+local StatusEffects = prism.components.StatusEffects
 
-   --- @param maxHP integer
-   function Health:__new(maxHP)
-      self.maxHP = maxHP
-      self.hp = maxHP
+--- @class HealthModifier : StatusEffectsModifier
+--- @field maxHP integer
+local HealthModifier = prism.components.StatusEffects.Modifier:extend "HealthModifier"
+
+function HealthModifier:__new(delta)
+   self.maxHP = delta
+end
+
+--- @class Health : Component
+--- @field private maxHP integer
+--- @field hp integer
+--- @overload fun(maxHP: integer)
+local Health = prism.Component:extend("Health")
+
+--- @param maxHP integer
+function Health:__new(maxHP)
+   self.maxHP = maxHP
+   self.hp = maxHP
+end
+
+--- @return integer maxHP
+function Health:getMaxHP()
+   local modifiers = StatusEffects.getActorModifiers(self.owner, HealthModifier)
+
+   local modifiedMaxHP = self.maxHP
+   for _, modifier in ipairs(modifiers) do
+      modifiedMaxHP = modifiedMaxHP + modifier.maxHP
    end
 
-   --- @param amount integer
-   function Health:heal(amount)
-      self.hp = math.min(self.hp + amount, self.maxHP)
-   end
+   return modifiedMaxHP
+end
 
-   return Health
+--- @param amount integer
+function Health:heal(amount)
+   self.hp = math.min(self.hp + amount, self:getMaxHP())
+end
+
+function Health:enforceBounds()
+   self.hp = math.min(self.hp, self:getMaxHP())
+end
+
+Health.Modifier = HealthModifier
+
+return Health
