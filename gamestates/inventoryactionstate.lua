@@ -21,9 +21,7 @@ function InventoryActionState:__new(display, decision, level, item)
 
    for _, Action in ipairs(self.decision.actor:getActions()) do
       local action = Action(self.decision.actor, self.item)
-      if self.level:canPerform(action) then
-         table.insert(self.actions, action)
-      end
+      if self.level:canPerform(action) then table.insert(self.actions, action) end
    end
 end
 
@@ -48,7 +46,6 @@ end
 
 function InventoryActionState:keypressed(key)
    for i, action in ipairs(self.actions) do
-      print(key, string.char(i + 96))
       if key == string.char(i + 96) then
          self.decision:setAction(action)
          self.manager:pop()
