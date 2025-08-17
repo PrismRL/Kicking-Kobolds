@@ -2,7 +2,6 @@
 --- @overload fun(owner: Actor): Fall
 local Fall = prism.Action:extend "Fall"
 
---- @param level Level
 function Fall:canPerform(level)
    local x, y = self.owner:getPosition():decompose()
    local cell = level:getCell(x, y)
@@ -21,10 +20,8 @@ function Fall:canPerform(level)
    return true
 end
 
---- @param level Level
 function Fall:perform(level)
    level:perform(prism.actions.Die(self.owner))
 end
 
 return Fall
-
