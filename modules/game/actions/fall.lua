@@ -10,11 +10,13 @@ function Fall:canPerform(level)
 
    local cellMask = cell:getCollisionMask()
    local mover = self.owner:get(prism.components.Mover)
-   local mask = mover and mover.mask or 0 -- default to the immovable mask
+   if mover then
+      -- We have a Void component on the cell. If the actor CAN'T move here
+      -- then they fall.
+      return not prism.Collision.checkBitmaskOverlap(cellMask, mover.mask)
+   end
 
-   -- We have a Void component on the cell. If the actor CAN'T move here
-   -- then they fall.
-   return not prism.Collision.checkBitmaskOverlap(cellMask, mask)
+   return true
 end
 
 --- @param level Level
@@ -23,3 +25,4 @@ function Fall:perform(level)
 end
 
 return Fall
+
