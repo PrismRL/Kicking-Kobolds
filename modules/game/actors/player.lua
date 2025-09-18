@@ -1,7 +1,7 @@
 prism.registerActor("Player", function()
    return prism.Actor.fromComponents {
       prism.components.Position(),
-      prism.components.Drawable("@", prism.Color4.GREEN, nil, math.huge),
+      prism.components.Drawable { index = "@", color = prism.Color4.BLUE },
       prism.components.Collider(),
       prism.components.PlayerController(),
       prism.components.Senses(),
@@ -9,7 +9,7 @@ prism.registerActor("Player", function()
       prism.components.Mover { "walk" },
       prism.components.Health(10),
       prism.components.Log(),
-      prism.components.Inventory{
+      prism.components.Inventory {
          limitCount = 26,
       },
       prism.components.StatusEffects(),

@@ -1,5 +1,6 @@
 return {
    {
-      entry = prism.actors.MeatBrick
-   }
+      entry = "MeatBrick",
+   },
 }
+

@@ -1,6 +1,7 @@
 prism.registerCell("Floor", function()
    return prism.Cell.fromComponents {
-      prism.components.Drawable(".", nil, prism.Color4.WHITE * 0.25),
+      prism.components.Name("Floor"),
+      prism.components.Drawable { index = "." },
       prism.components.Collider({ allowedMovetypes = { "walk", "fly" } }),
    }
 end)

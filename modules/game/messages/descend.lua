@@ -1,6 +1,6 @@
 --- @class DescendMessage : Message
 --- @overload fun(descender: Actor): DescendMessage
-local DescendMessage = prism.Object:extend("DescendMessage")
+local DescendMessage = prism.Message:extend("DescendMessage")
 
 --- @param descender Actor
 function DescendMessage:__new(descender)

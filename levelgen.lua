@@ -5,10 +5,11 @@ local PARTITIONS = 3
 --- @param player Actor
 --- @param width integer
 --- @param height integer
-return function(rng, player, width, height)
-   local builder = prism.MapBuilder(prism.cells.Wall)
-
+--- @param builder? LevelBuilder
+--- @return LevelBuilder
+return function(rng, player, width, height, builder)
    -- Fill the map with random noise of pits and walls.
+   builder = builder or prism.LevelBuilder(prism.cells.Pit)
    local nox, noy = rng:random(1, 10000), rng:random(1, 10000)
    for x = 1, width do
       for y = 1, height do
@@ -36,7 +37,8 @@ return function(rng, player, width, height)
             local roomRect = prism.Rectangle(x, y, rw, rh)
             rooms[prism.Vector2._hash(px, py)] = roomRect
 
-            builder:drawRectangle(x, y, x + rw, y + rh, prism.cells.Floor)
+            coroutine.yield()
+            builder:rectangle("fill", x, y, x + rw, y + rh, prism.cells.Floor)
          end
       end
    end
@@ -51,17 +53,18 @@ return function(rng, player, width, height)
       local bx, by = b:center():floor():decompose()
       -- Randomly choose one of two L-shaped tunnel patterns for variety.
       if rng:random() > 0.5 then
-         builder:drawLine(ax, ay, bx, ay, prism.cells.Floor)
-         builder:drawLine(bx, ay, bx, by, prism.cells.Floor)
+         builder:line(ax, ay, bx, ay, prism.cells.Floor)
+         builder:line(bx, ay, bx, by, prism.cells.Floor)
       else
-         builder:drawLine(ax, ay, ax, by, prism.cells.Floor)
-         builder:drawLine(ax, by, bx, by, prism.cells.Floor)
+         builder:line(ax, ay, ax, by, prism.cells.Floor)
+         builder:line(ax, by, bx, by, prism.cells.Floor)
       end
    end
 
    for hash, currentRoom in pairs(rooms) do
       local px, py = prism.Vector2._unhash(hash)
 
+      coroutine.yield()
       createLShapedHallway(currentRoom, rooms[prism.Vector2._hash(px + 1, py)])
       createLShapedHallway(currentRoom, rooms[prism.Vector2._hash(px, py + 1)])
    end
@@ -80,11 +83,15 @@ return function(rng, player, width, height)
       if room ~= startRoom then
          local cx, cy = room:center():floor():decompose()
 
+         coroutine.yield()
          builder:addActor(prism.actors.Kobold(), cx, cy)
       end
    end
 
-   builder:addPadding(1, prism.cells.Wall)
+   coroutine.yield()
+   builder:addActor(player, playerPos.x, playerPos.y)
+   coroutine.yield()
+   builder:pad(1, prism.cells.Wall)
 
    --- @type Rectangle[]
    local availableRooms = {}
