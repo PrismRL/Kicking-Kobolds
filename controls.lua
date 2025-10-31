@@ -17,6 +17,7 @@ return spectrum.Input.Controls {
       pickup         = "p",
       ["return"]     = "backspace",
       inventory      = "tab",
+      equipment      = "o",
       wait           = "x",
       restart        = "r",
       quit           = "q",

@@ -103,6 +103,16 @@ function GameLevelState:updateDecision(dt, owner, decision)
       end
    end
 
+   if controls.equipment.pressed then
+      local equipper = owner:get(prism.components.Equipper)
+      if equipper then
+         local equipState =
+            spectrum.gamestates.EquipmentState(self.display, decision, self.level, equipper)
+         self.manager:push(equipState)
+      end
+   end
+
+
    if controls.wait.pressed then self:setAction(prism.actions.Wait(owner)) end
 end
 
@@ -125,7 +135,7 @@ function GameLevelState:draw()
 
    -- Say hello!
    local health = player:get(prism.components.Health)
-   if health then self.display:print(1, 1, "HP: " .. health.hp .. "/" .. health.maxHP) end
+   if health then self.display:print(1, 1, "HP: " .. health.hp .. "/" .. health:getMaxHP()) end
 
    self.display:print(1, 2, "Depth: " .. Game.depth)
 

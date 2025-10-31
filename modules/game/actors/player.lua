@@ -13,5 +13,16 @@ prism.registerActor("Player", function()
          limitCount = 26,
       },
       prism.components.StatusEffects(),
+      prism.components.Equipper{
+         "head",
+         "cape",
+         "chest",
+         "pants",
+         "boots",
+         "gloves",
+         "ring",
+         "ring",
+         "necklace"
+      }
    }
 end)
