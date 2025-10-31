@@ -8,6 +8,7 @@ prism.loadModule("prism/extra/log")
 prism.loadModule("prism/extra/inventory")
 prism.loadModule("prism/extra/droptable")
 prism.loadModule("prism/extra/statuseffects")
+prism.loadModule("prism/extra/equipment")
 prism.loadModule("modules/base")
 prism.loadModule("modules/game")
 
