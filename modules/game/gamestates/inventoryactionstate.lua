@@ -17,6 +17,7 @@ function InventoryActionState:__new(display, decision, level, item)
    self.level = level
    self.item = item
 
+   --- @type Action[]
    self.actions = {}
 
    for _, Action in ipairs(self.decision.actor:getActions()) do
@@ -36,9 +37,9 @@ function InventoryActionState:draw()
    self.display:clear()
    self.display:print(1, 1, Name.get(self.item), nil, nil, 2, "right")
 
-   for i, action in ipairs(self.actions) do
+   for i, Action in ipairs(self.actions) do
       local letter = string.char(96 + i)
-      local name = string.gsub(action.name or action.className, "Action", "")
+      local name = string.gsub(Action:getName(), "Action", "")
       self.display:print(1, 1 + i, string.format("[%s] %s", letter, name), nil, nil, nil, "right")
    end
 
@@ -47,23 +48,22 @@ end
 
 function InventoryActionState:update(dt)
    controls:update()
-   for i, action in ipairs(self.actions) do
+   for i, Action in ipairs(self.actions) do
       if spectrum.Input.key[string.char(i + 96)].pressed then
-         if self.decision:setAction(action(self.decision.actor, self.item), self.level) then
+         if self.decision:setAction(Action(self.decision.actor, self.item), self.level) then
             self.manager:pop()
             return
          end
 
-         self.selectedAction = action
+         self.selectedAction = Action
          self.targets = { self.item }
-         print(action.className)
-         for i = action:getNumTargets(), 2, -1 do
+         for j = Action:getNumTargets(), 2, -1 do
             self.manager:push(
                spectrum.gamestates.GeneralTargetHandler(
                   self.display,
                   self.previousState,
                   self.targets,
-                  action:getTarget(i),
+                  Action:getTarget(j),
                   self.targets
                )
             )

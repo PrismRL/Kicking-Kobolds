@@ -1,6 +1,5 @@
 return {
    {
-      entry = "MeatBrick",
+      entry = "WandofHurt",
    },
 }
-
