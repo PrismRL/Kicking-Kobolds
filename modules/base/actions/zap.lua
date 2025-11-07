@@ -1,6 +1,7 @@
 local Log = prism.components.Log
 
-local ZappableTarget = prism.InventoryTarget():inInventory():with(prism.components.Zappable)
+local ZappableTarget =
+   prism.inventory.InventoryTarget():inInventory():with(prism.components.Zappable)
 
 --- @class Zap : Action
 local Zap = prism.Action:extend "Zap"
