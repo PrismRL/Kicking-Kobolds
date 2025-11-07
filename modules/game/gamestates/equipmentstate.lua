@@ -10,9 +10,9 @@ local EquipmentState = spectrum.GameState:extend "EquipmentState"
 --- @param level Level
 --- @param equipper Equipper
 function EquipmentState:__new(display, decision, level, equipper)
-   self.display  = display
+   self.display = display
    self.decision = decision
-   self.level    = level
+   self.level = level
    self.equipper = equipper
 
    self.entries = {}
@@ -20,8 +20,8 @@ function EquipmentState:__new(display, decision, level, equipper)
 
    for i, slot in ipairs(equipper.slots or {}) do
       self.entries[i] = {
-         slot  = slot,
-         actor = equipper.equipped[i],
+         slot = slot.label,
+         actor = equipper.equipped[slot.name],
       }
       self.letters[i] = string.char(96 + i) -- a, b, c, ...
    end
@@ -38,15 +38,12 @@ function EquipmentState:draw()
 
    for i, entry in ipairs(self.entries) do
       local letter = self.letters[i]
-      local slot   = entry.slot
-      local name   = entry.actor and prism.components.Name.get(entry.actor) or "(empty)"
-      local line   = ("[%s] %s - %s"):format(letter, slot, name)
+      local slot = entry.slot
+      local name = entry.actor and prism.components.Name.get(entry.actor) or "(empty)"
+      local line = ("[%s] %s - %s"):format(letter, slot, name)
       self.display:print(self.display.width - 28, 1 + i, line, nil, nil, 2)
       if entry.actor then
-         local drawable = entry.actor:get(prism.components.Drawable)
-         if drawable then
-            self.display:putDrawable(self.display.width - 28 + #line, 1 + i, drawable)
-         end
+         self.display:putActor(self.display.width - 28 + #line, 1 + i, entry.actor)
       end
    end
 
@@ -58,11 +55,13 @@ function EquipmentState:update(dt)
 
    for i, letter in ipairs(self.letters) do
       if spectrum.Input.key[letter].pressed then
-         self.decision:setAction(prism.actions.Unequip(self.decision.actor, self.entries[i].actor), self.level)
+         self.decision:setAction(
+            prism.actions.Unequip(self.decision.actor, self.entries[i].actor),
+            self.level
+         )
          self.manager:pop()
       end
    end
-
 
    -- No equipment interaction yet—just allow closing
    if controls.equipment.pressed or controls.back.pressed then

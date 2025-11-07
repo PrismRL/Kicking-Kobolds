@@ -63,7 +63,7 @@ function InventoryActionState:update(dt)
                   self.display,
                   self.previousState,
                   self.targets,
-                  Action:getTarget(i),
+                  Action:getTarget(j),
                   self.targets
                )
             )

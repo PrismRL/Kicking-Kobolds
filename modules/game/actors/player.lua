@@ -13,16 +13,13 @@ prism.registerActor("Player", function()
          limitCount = 26,
       },
       prism.components.ConditionHolder(),
-      prism.components.Equipper{
+      prism.components.Equipper {
          "head",
-         "cape",
-         "chest",
-         "pants",
+         "armor",
          "boots",
-         "gloves",
-         "ring",
-         "ring",
-         "necklace"
-      }
+         { name = "ringl", category = "ring", label = "ring" },
+         { name = "ringr", category = "ring", label = "ring" },
+         "amulet",
+      },
    }
 end)

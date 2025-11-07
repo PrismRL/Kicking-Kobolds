@@ -53,7 +53,7 @@ function GeneralTargetHandler:draw()
 
    -- if there's a target then we should draw its name!
    if prism.Entity:is(self.curTarget) then
-      self.display:print(x + 1, y, Name.get(self.curTarget))
+      self.display:print(x + 1, y, Name.get(self.curTarget), nil, prism.Color4.BLACK)
    end
    self.display:pop()
    self.display:draw()

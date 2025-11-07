@@ -8,6 +8,8 @@ function HealthModifier:__new(delta)
    self.maxHP = delta
 end
 
+prism.register(HealthModifier)
+
 --- @class Health : Component
 --- @field private maxHP integer
 --- @field hp integer
@@ -40,7 +42,5 @@ end
 function Health:enforceBounds()
    self.hp = math.min(self.hp, self:getMaxHP())
 end
-
-Health.Modifier = HealthModifier
 
 return Health

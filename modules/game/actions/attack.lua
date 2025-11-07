@@ -24,6 +24,7 @@ function Attack:perform(level, attacked)
 
    Log.addMessage(self.owner, "You attack the %s for %i damage.", attackName, dealt)
    Log.addMessage(attacked, "The %s attacks you for %i damage!", ownerName, dealt)
+   -- stylua: ignore
    Log.addMessageSensed(level, self, "The %s attacks the %s for %i damage.", ownerName, attackName, dealt)
 end
 

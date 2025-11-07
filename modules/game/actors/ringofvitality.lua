@@ -8,12 +8,7 @@ prism.registerActor("RingofVitality", function()
       prism.components.Item(),
       prism.components.Equipment(
          "ring",
-         prism.Condition {
-            modifiers = {
-               prism.components.Health.Modifier(10),
-            },
-         }
+         prism.condition.Condition(prism.modifiers.HealthModifier(5))
       ),
    }
 end)
-

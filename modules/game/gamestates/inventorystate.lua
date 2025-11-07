@@ -58,7 +58,7 @@ function InventoryState:update(dt)
       end
    end
 
-   if controls.inventory.pressed or controls["return"].pressed then self.manager:pop() end
+   if controls.inventory.pressed or controls.back.pressed then self.manager:pop() end
 end
 
 function InventoryState:resume()

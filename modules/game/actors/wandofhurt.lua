@@ -2,6 +2,7 @@ prism.registerActor("WandofHurt", function()
    return prism.Actor.fromComponents {
       prism.components.Name("Wand of Hurt"),
       prism.components.Drawable {
+         color = prism.Color4.LIME,
          index = "/",
       },
       prism.components.HurtZappable {
