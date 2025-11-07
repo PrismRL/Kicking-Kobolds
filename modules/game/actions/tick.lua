@@ -1,26 +1,22 @@
 --- @class Tick : Action
 local Tick = prism.Action:extend "Tick"
-Tick.requiredComponents = { prism.components.StatusEffects }
+Tick.requiredComponents = { prism.components.ConditionHolder }
 
 --- @param level Level
 function Tick:perform(level)
    -- Handle status effect durations
-   local statusComponent = self.owner:expect(prism.components.StatusEffects)
-
-   local expired = {}
-   for handle, status in statusComponent:pairs() do
-      --- @cast status GameStatusInstance
-      if status.duration then
-         status.duration = status.duration - 1
-         if status.duration <= 0 then
-            table.insert(expired, handle)
+   self.owner
+      :expect(prism.components.ConditionHolder)
+      :each(function(condition)
+         if prism.conditions.TickedCondition:is(condition) then
+            --- @cast condition TickedCondition
+            condition.duration = condition.duration - 1
          end
-      end
-   end
-
-   for _, handle in ipairs(expired) do
-      statusComponent:remove(handle)
-   end
+      end)
+      :removeIf(function(condition)
+         --- @cast condition TickedCondition
+         return prism.conditions.TickedCondition:is(condition) and condition.duration <= 0
+      end)
 
    -- Validate components
    local health = self.owner:get(prism.components.Health)

@@ -15,7 +15,7 @@ return spectrum.Input.Controls {
       move_down      = { "s", "j", "axis:lefty-" },
       move_downright = { "c", "n" },
       pickup         = "p",
-      ["return"]     = "backspace",
+      back           = "backspace",
       inventory      = "tab",
       wait           = "x",
       restart        = "r",
