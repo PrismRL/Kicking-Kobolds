@@ -3,20 +3,18 @@ local sf = string.format
 local Log = prism.components.Log
 local Name = prism.components.Name
 
-
-local EatTarget = prism.InventoryTarget(prism.components.Edible)
-   :inInventory()
+local EatTarget = prism.inventory.InventoryTarget(prism.components.Edible):inInventory()
 
 ---@class Eat : Action
 ---@overload fun(owner: Actor, food: Actor): Eat
 local Eat = prism.Action:extend("Eat")
 
 Eat.requiredComponents = {
-   prism.components.Health
+   prism.components.Health,
 }
 
 Eat.targets = {
-   EatTarget
+   EatTarget,
 }
 
 --- @param level Level
@@ -34,3 +32,4 @@ function Eat:perform(level, food)
 end
 
 return Eat
+

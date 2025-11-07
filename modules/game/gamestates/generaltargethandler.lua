@@ -91,7 +91,7 @@ function GeneralTargetHandler:update(dt)
       self.manager:pop()
    end
 
-   if controls["return"].pressed then self.manager:pop("pop") end
+   if controls.back.pressed then self.manager:pop("pop") end
 
    if controls.move.pressed then
       self.selectorPosition = self.selectorPosition + controls.move.vector

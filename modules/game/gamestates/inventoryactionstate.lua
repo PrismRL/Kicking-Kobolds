@@ -56,7 +56,6 @@ function InventoryActionState:update(dt)
 
          self.selectedAction = action
          self.targets = { self.item }
-         print(action.className)
          for i = action:getNumTargets(), 2, -1 do
             self.manager:push(
                spectrum.gamestates.GeneralTargetHandler(
@@ -71,7 +70,7 @@ function InventoryActionState:update(dt)
       end
    end
 
-   if controls.inventory.pressed or controls["return"].pressed then self.manager:pop() end
+   if controls.inventory.pressed or controls.back.pressed then self.manager:pop() end
 end
 
 function InventoryActionState:resume()
