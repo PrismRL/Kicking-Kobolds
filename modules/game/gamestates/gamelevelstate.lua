@@ -17,7 +17,8 @@ function GameLevelState:__new(display, builder, seed)
    builder:addSystems(
       prism.systems.SensesSystem(),
       prism.systems.SightSystem(),
-      prism.systems.FallSystem()
+      prism.systems.FallSystem(),
+      prism.systems.TickSystem()
    )
 
    -- Initialize with the created level and display, the heavy lifting is done by
@@ -111,7 +112,6 @@ function GameLevelState:updateDecision(dt, owner, decision)
          self.manager:push(equipState)
       end
    end
-
 
    if controls.wait.pressed then self:setAction(prism.actions.Wait(owner)) end
 end

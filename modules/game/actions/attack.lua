@@ -6,7 +6,6 @@ local AttackTarget = prism.Target(prism.components.Health):range(1)
 ---@class Attack : Action
 ---@overload fun(owner: Actor, attacked: Actor): Attack
 local Attack = prism.Action:extend("Attack")
-Attack.name = "Attack"
 Attack.targets = { AttackTarget }
 Attack.requiredComponents = { prism.components.Attacker }
 
@@ -24,7 +23,14 @@ function Attack:perform(level, attacked)
 
    Log.addMessage(self.owner, "You attack the %s for %i damage.", attackName, dealt)
    Log.addMessage(attacked, "The %s attacks you for %i damage!", ownerName, dealt)
-   Log.addMessageSensed(level, self, "The %s attacks the %s for %i damage.", ownerName, attackName, dealt)
+   Log.addMessageSensed(
+      level,
+      self,
+      "The %s attacks the %s for %i damage.",
+      ownerName,
+      attackName,
+      dealt
+   )
 end
 
 return Attack

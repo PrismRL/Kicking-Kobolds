@@ -1,7 +1,7 @@
 prism.registerActor("Player", function()
    return prism.Actor.fromComponents {
       prism.components.Position(),
-      prism.components.Drawable { index = "@", color = prism.Color4.BLUE },
+      prism.components.Drawable { index = "@", color = prism.Color4.BLUE, layer = math.huge },
       prism.components.Collider(),
       prism.components.PlayerController(),
       prism.components.Senses(),
@@ -12,17 +12,14 @@ prism.registerActor("Player", function()
       prism.components.Inventory {
          limitCount = 26,
       },
-      prism.components.StatusEffects(),
-      prism.components.Equipper{
+      prism.components.ConditionHolder(),
+      prism.components.Equipper {
          "head",
-         "cape",
-         "chest",
-         "pants",
+         "armor",
          "boots",
-         "gloves",
-         "ring",
-         "ring",
-         "necklace"
-      }
+         { name = "ringl", category = "ring", label = "ring" },
+         { name = "ringr", category = "ring", label = "ring" },
+         "amulet",
+      },
    }
 end)
