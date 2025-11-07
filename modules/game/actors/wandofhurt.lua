@@ -10,5 +10,6 @@ prism.registerActor("WandofHurt", function()
          damage = 3,
       },
       prism.components.Item(),
+      prism.components.Position(),
    }
 end)
