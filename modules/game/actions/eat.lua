@@ -4,7 +4,7 @@ local Log = prism.components.Log
 local Name = prism.components.Name
 
 
-local EatTarget = prism.InventoryTarget(prism.components.Edible)
+local EatTarget = prism.inventory.InventoryTarget(prism.components.Edible)
    :inInventory()
 
 ---@class Eat : Action

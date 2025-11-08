@@ -6,7 +6,7 @@ prism.registerActor("RingofVitality", function()
          color = prism.Color4.YELLOW
       },
       prism.components.Item(),
-      prism.components.Equipment("ring", prism.GameStatusInstance{
+      prism.components.Equipment("ring", prism.GameCondition{
          modifiers = {
             prism.components.Health.Modifier(10)
          }

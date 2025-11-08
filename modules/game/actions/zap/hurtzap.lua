@@ -1,4 +1,4 @@
-local HurtZappableTarget = prism.InventoryTarget(prism.components.HurtZappable):inInventory()
+local HurtZappableTarget = prism.inventory.InventoryTarget(prism.components.HurtZappable):inInventory()
 
 local HurtTarget = prism.Target(prism.components.Health):range(5):sensed()
 

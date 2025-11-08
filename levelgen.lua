@@ -9,7 +9,7 @@ local PARTITIONS = 3
 --- @return LevelBuilder
 return function(rng, player, width, height, builder)
    -- Fill the map with random noise of pits and walls.
-   builder = builder or prism.LevelBuilder(prism.cells.Pit)
+   builder = builder or prism.LevelBuilder()
    local nox, noy = rng:random(1, 10000), rng:random(1, 10000)
    for x = 1, width do
       for y = 1, height do

@@ -1,6 +1,8 @@
 local levelgen = require "levelgen"
 
 --- @class Game : Object
+--- @field depth integer
+--- @field lost boolean
 --- @overload fun(seed: string): Game
 local Game = prism.Object:extend("Game")
 
@@ -25,4 +27,4 @@ function Game:generateNextFloor(player, builder)
    return levelgen(genRNG, player, 60, 30, builder)
 end
 
-return Game(tostring(os.time()))
+_G.Game = Game(tostring(os.time()))

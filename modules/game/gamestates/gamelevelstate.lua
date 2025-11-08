@@ -1,4 +1,3 @@
-local Game = require "game"
 local controls = require "controls"
 
 --- @class GameLevelState : LevelState
@@ -13,16 +12,20 @@ local GameLevelState = spectrum.gamestates.LevelState:extend "GameLevelState"
 --- @param builder LevelBuilder
 --- @param seed string
 function GameLevelState:__new(display, builder, seed)
-   builder:addSeed(seed)
-   builder:addSystems(
-      prism.systems.SensesSystem(),
-      prism.systems.SightSystem(),
-      prism.systems.FallSystem()
-   )
+   if builder.build then
+      builder:addSeed(seed)
+      builder:addSystems(
+         prism.systems.SensesSystem(),
+         prism.systems.SightSystem(),
+         prism.systems.FallSystem()
+      )
 
-   -- Initialize with the created level and display, the heavy lifting is done by
-   -- the parent class.
-   self.super.__new(self, builder:build(prism.cells.Wall), display)
+      -- Initialize with the created level and display, the heavy lifting is done by
+      -- the parent class.
+      self.super.__new(self, builder:build(prism.cells.Wall), display)
+   else
+      self.super.__new(self, builder, display)
+   end
 end
 
 function GameLevelState:handleMessage(message)
@@ -52,6 +55,7 @@ end
 
 -- updateDecision is called whenever there's an ActionDecision to handle.
 function GameLevelState:updateDecision(dt, owner, decision)
+   Game.level = self.level
    -- Controls need to be updated each frame.
    controls:update()
 

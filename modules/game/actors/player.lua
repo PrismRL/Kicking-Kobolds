@@ -12,7 +12,7 @@ prism.registerActor("Player", function()
       prism.components.Inventory {
          limitCount = 26,
       },
-      prism.components.StatusEffects(),
+      prism.components.ConditionHolder(),
       prism.components.Equipper{
          "head",
          "cape",

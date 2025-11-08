@@ -16,7 +16,7 @@ function Die:perform(level)
    level:removeActor(self.owner)
 
    if not level:query(prism.components.PlayerController):first() then
-      level:yield(prism.messages.Lose())
+      level:yield(prism.messages.LoseMessage())
    end
 end
 

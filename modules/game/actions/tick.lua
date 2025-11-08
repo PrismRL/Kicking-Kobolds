@@ -9,7 +9,7 @@ function Tick:perform(level)
 
    local expired = {}
    for handle, status in statusComponent:pairs() do
-      --- @cast status GameStatusInstance
+      --- @cast status GameCondition
       if status.duration then
          status.duration = status.duration - 1
          if status.duration <= 0 then

@@ -1,14 +1,14 @@
---- @class GameStatusInstance : StatusEffectsInstance
+--- @class GameCondition : Condition
 --- @field duration integer?
-local GameStatusInstance = prism.components.StatusEffects.Instance:extend "GameStatusInstance"
+local GameCondition = prism.condition.Condition:extend "GameStatusInstance"
 
---- @class GameStatusInstanceOptions : StatusEffectsInstanceOptions
+--- @class GameConditionOptions : Condition
 --- @field duration integer
 
---- @param options GameStatusInstanceOptions
-function GameStatusInstance:__new(options)
-   prism.components.StatusEffects.Instance.__new(self, options)
+--- @param options GameConditionOptions
+function GameCondition:__new(options)
+   prism.conditions.Condition.__new(self, options)
    self.duration = options.duration or nil
 end
 
-return GameStatusInstance
+return GameCondition

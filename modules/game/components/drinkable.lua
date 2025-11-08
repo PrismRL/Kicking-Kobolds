@@ -1,10 +1,10 @@
 --- @class DrinkableOptions
 --- @field healing integer?
---- @field status StatusEffectsInstance?
+--- @field status Condition?
 
 --- @class Drinkable : Component
 --- @field healing integer
---- @field status StatusEffectsInstance?
+--- @field status Condition?
 --- @overload fun(options: DrinkableOptions): Drinkable
 local Drinkable = prism.Component:extend "Drinkable"
 
