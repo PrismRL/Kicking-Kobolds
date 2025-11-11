@@ -20,7 +20,7 @@ function GeneralTargetHandler:getValidTargets()
       table.insert(valid, foundTarget)
    end
 
-   if not (self.target.type and self.target.type ~= prism.Vector2) then
+   if self.target.type and self.target.type == prism.Vector2 then
       for x, y in self.level.map:each() do
          local vec = prism.Vector2(x, y)
          if self.target:validate(self.level, self.owner, vec, self.targetList) then
@@ -33,7 +33,7 @@ function GeneralTargetHandler:getValidTargets()
 end
 
 function GeneralTargetHandler:setSelectorPosition()
-   if prism.Vector2.is(self.curTarget) then
+   if prism.Vector2:is(self.curTarget) then
       self.selectorPosition = self.curTarget
    elseif self.curTarget then
       self.selectorPosition = self.curTarget:getPosition()
@@ -41,31 +41,21 @@ function GeneralTargetHandler:setSelectorPosition()
 end
 
 function GeneralTargetHandler:draw()
-   local cameraPos = self.selectorPosition
-
+   self.levelState:draw()
    self.display:clear()
-   -- set the camera position on the display
-   local ox, oy = self.display:getCenterOffset(cameraPos:decompose())
-   self.display:setCamera(ox, oy)
 
-   -- draw the level
-   local primary, secondary = self.levelState:getSenses()
-   self.display:putSenses(primary, secondary, self.level)
+   local x, y = self.selectorPosition:decompose()
 
-   -- put a string to let the player know what's happening
    self.display:print(1, 1, "Select a target!")
-   self.display:print(
-      self.selectorPosition.x + ox,
-      self.selectorPosition.y + oy,
-      "X",
-      prism.Color4.RED
-   )
+   self.display:push()
+   -- print a string to let the player know what's happening
+   self.display:print(x, y, "X", prism.Color4.RED, prism.Color4.BLACK)
 
-   -- if there's a target then we should draw it's name!
-   if self.curTarget then
-      local x, y = cameraPos:decompose()
-      self.display:print(x + ox + 1, y + oy, Name.get(self.curTarget))
+   -- if there's a target then we should draw its name!
+   if prism.Entity:is(self.curTarget) then
+      self.display:print(x + 1, y, Name.get(self.curTarget))
    end
+   self.display:pop()
    self.display:draw()
 end
 
@@ -91,7 +81,7 @@ function GeneralTargetHandler:update(dt)
       self.manager:pop()
    end
 
-   if controls["return"].pressed then self.manager:pop("pop") end
+   if controls.back.pressed then self.manager:pop("pop") end
 
    if controls.move.pressed then
       self.selectorPosition = self.selectorPosition + controls.move.vector

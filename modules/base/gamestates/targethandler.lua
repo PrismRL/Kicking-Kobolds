@@ -33,12 +33,8 @@ function TargetHandler:init()
 end
 
 function TargetHandler:resume(previous, shouldPop)
-   if shouldPop == "poprecursive" then
-      self.manager:pop("poprecursive")
-      return
-   end
    if shouldPop then
-      self.manager:pop()
+      self.manager:pop(shouldPop == "poprecursive" and shouldPop or nil)
       return
    end
 

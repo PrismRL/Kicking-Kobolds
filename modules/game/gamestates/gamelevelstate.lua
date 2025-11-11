@@ -75,10 +75,7 @@ function GameLevelState:updateDecision(dt, owner, decision)
          self.level:query(prism.components.Container):at(destination:decompose()):first()
 
       local openContainer = prism.actions.OpenContainer(owner, openable)
-      if self.level:canPerform(openContainer) then
-         self:setAction(openContainer)
-         return
-      end
+      if self:setAction(openContainer) then return end
 
       -- stylua: ignore
       local target = self.level

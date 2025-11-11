@@ -1,4 +1,7 @@
-local HurtZappableTarget = prism.inventory.InventoryTarget(prism.components.HurtZappable):inInventory()
+local Log = prism.components.Log
+local Name = prism.components.Name
+
+local HurtZappableTarget = prism.targets.InventoryTarget(prism.components.HurtZappable)
 
 local HurtTarget = prism.Target(prism.components.Health):range(5):sensed()
 
@@ -12,10 +15,26 @@ HurtZap.targets = {
 }
 
 --- @param level Level
-function HurtZap:perform(level, zappable, hurtable)
-   prism.actions.Zap.perform(self, level, zappable)
+function HurtZap:perform(level, zappable, hurtable, secondHurtable)
+   self.super.perform(self, level, zappable)
    local zappableComponent = zappable:expect(prism.components.HurtZappable)
-   level:tryPerform(prism.actions.Damage(hurtable, zappableComponent.damage))
+   local damage = prism.actions.Damage(hurtable, zappableComponent.damage)
+   level:tryPerform(damage)
+
+   local dealt = damage.dealt or 0
+   local zapName = Name.lower(hurtable)
+   local ownerName = Name.lower(self.owner)
+
+   Log.addMessage(self.owner, "You zap the %s for %i damage!", zapName, dealt)
+   Log.addMessage(hurtable, "The %s zaps you for %i damage!", ownerName, dealt)
+   Log.addMessageSensed(
+      level,
+      self,
+      "The %s kicks the %s for %i damage.",
+      ownerName,
+      zapName,
+      dealt
+   )
 end
 
 return HurtZap

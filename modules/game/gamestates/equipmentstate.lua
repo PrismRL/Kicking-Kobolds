@@ -65,7 +65,7 @@ function EquipmentState:update(dt)
 
 
    -- No equipment interaction yet—just allow closing
-   if controls.equipment.pressed or controls["return"].pressed then
+   if controls.equipment.pressed or controls.back.pressed then
       self.manager:pop()
       return
    end
