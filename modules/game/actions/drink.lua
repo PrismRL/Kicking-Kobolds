@@ -1,4 +1,4 @@
-local DrinkTarget = prism.inventory.InventoryTarget():inInventory():with(prism.components.Drinkable)
+local DrinkTarget = prism.targets.InventoryTarget(prism.components.Drinkable)
 
 --- @class Drink : Action
 local Drink = prism.Action:extend "Drink"

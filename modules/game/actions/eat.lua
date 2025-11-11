@@ -3,7 +3,7 @@ local sf = string.format
 local Log = prism.components.Log
 local Name = prism.components.Name
 
-local EatTarget = prism.inventory.InventoryTarget(prism.components.Edible):inInventory()
+local EatTarget = prism.targets.InventoryTarget(prism.components.Edible)
 
 ---@class Eat : Action
 ---@overload fun(owner: Actor, food: Actor): Eat
@@ -32,4 +32,3 @@ function Eat:perform(level, food)
 end
 
 return Eat
-

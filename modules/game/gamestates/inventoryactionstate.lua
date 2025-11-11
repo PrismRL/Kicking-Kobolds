@@ -58,6 +58,7 @@ function InventoryActionState:update(dt)
          self.selectedAction = Action
          self.targets = { self.item }
          for j = Action:getNumTargets(), 2, -1 do
+            if not self.manager then return end
             self.manager:push(
                spectrum.gamestates.GeneralTargetHandler(
                   self.display,
