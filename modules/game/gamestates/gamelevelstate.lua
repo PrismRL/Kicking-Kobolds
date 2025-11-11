@@ -10,7 +10,7 @@ local GameLevelState = spectrum.gamestates.LevelState:extend "GameLevelState"
 
 --- @param display Display
 --- @param builder LevelBuilder
---- @param seed string
+--- @param seed string?
 function GameLevelState:__new(display, builder, seed)
    if builder.build then
       builder:addSeed(seed)

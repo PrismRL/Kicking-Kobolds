@@ -30,15 +30,6 @@ local manager = spectrum.StateManager()
 -- we put out levelstate on top here, but you could create a main menu
 --- @diagnostic disable-next-line
 function love.load(args)
-   local lz = love.filesystem.read("save.lz4")
-   if lz then
-      local mp = love.data.decompress("string", "lz4", lz)
-      local save = prism.Object.deserialize(prism.messagepack.unpack(mp))
-      if save.level then
-         Game = save
-      end
-   end
-
    if args[1] == "--debug" then
       local builder = prism.LevelBuilder()
       local function generator()
@@ -47,12 +38,7 @@ function love.load(args)
 
       manager:push(spectrum.gamestates.MapGeneratorState(generator, builder, display))
    else
-      if Game.level then
-         manager:push(spectrum.gamestates.GameLevelState(display, Game.level))
-      else
-         local builder = Game:generateNextFloor(prism.actors.Player())
-         manager:push(spectrum.gamestates.GameLevelState(display, builder, Game:getLevelSeed()))
-      end
+      manager:push(spectrum.gamestates.GameStartState(display))
    end
    manager:hook()
    spectrum.Input:hook()
@@ -63,6 +49,6 @@ function love.quit()
    local save = Game:serialize()
    local mp = prism.messagepack.pack(save)
    local lz = love.data.compress("string", "lz4", mp)
-
+   print "SAVING"
    love.filesystem.write("save.lz4", lz)
 end
