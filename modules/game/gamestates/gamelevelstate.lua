@@ -5,16 +5,16 @@ local controls = require "controls"
 --- handling input, and drawing the state to the screen.
 ---
 --- @field level Level
---- @overload fun(display: Display, builder: LevelBuilder, seed: string): GameLevelState
+--- @overload fun(display: Display, level: Level|LevelBuilder, seed?: string): GameLevelState
 local GameLevelState = spectrum.gamestates.LevelState:extend "GameLevelState"
 
 --- @param display Display
---- @param builder LevelBuilder
+--- @param level Level|LevelBuilder
 --- @param seed string?
-function GameLevelState:__new(display, builder, seed)
-   if builder.build then
-      builder:addSeed(seed)
-      builder:addSystems(
+function GameLevelState:__new(display, level, seed)
+   if prism.LevelBuilder:is(level) then
+      level:addSeed(seed)
+      level:addSystems(
          prism.systems.SensesSystem(),
          prism.systems.SightSystem(),
          prism.systems.FallSystem()
@@ -22,9 +22,9 @@ function GameLevelState:__new(display, builder, seed)
 
       -- Initialize with the created level and display, the heavy lifting is done by
       -- the parent class.
-      self.super.__new(self, builder:build(prism.cells.Wall), display)
+      self.super.__new(self, level:build(prism.cells.Wall), display)
    else
-      self.super.__new(self, builder, display)
+      self.super.__new(self, level, display)
    end
 end
 
@@ -112,7 +112,6 @@ function GameLevelState:updateDecision(dt, owner, decision)
          self.manager:push(equipState)
       end
    end
-
 
    if controls.wait.pressed then self:setAction(prism.actions.Wait(owner)) end
 end
