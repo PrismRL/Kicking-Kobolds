@@ -40,6 +40,7 @@ function love.load(args)
    else
       manager:push(spectrum.gamestates.GameStartState(display))
    end
+   
    manager:hook()
    spectrum.Input:hook()
 end
